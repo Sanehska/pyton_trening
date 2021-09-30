@@ -1,1 +1,1 @@
-# pyton_trening
+# pyton_trening_old
