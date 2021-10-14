@@ -21,7 +21,7 @@ class TestAddGroup(unittest.TestCase):
         self.login(wd, usermame="admin", password="secret")
         self.open_groups_page(wd)
         self.init_group_creation(wd)
-        self.fill_group_form(wd, Group(name="qwer", header="qwer1", footer="qwer2"))
+        self.fill_group_form(wd, Group(name="qwer", header="qwer1", footer="qwer3"))
         self.submit_group_creation(wd)
         self.return_the_groups_page(wd)
         self.logout(wd)
