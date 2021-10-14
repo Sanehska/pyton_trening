@@ -22,15 +22,15 @@ class NewTestContact(unittest.TestCase):
         self.return_the_home_page(wd)
         self.logout(wd)
 
-        def test_empty_test_contact(self):
-            wd = self.open_home_page()
-            self.login(wd, "admin", "secret")
-            self.open_new_page(wd)
-            self.init_new_contact_creation(wd)
-            self.fill_contact_form(wd, "", "", "")
-            self.submit_new_contact(wd)
-            self.return_the_home_page(wd)
-            self.logout(wd)
+    def test_empty_test_contact(self):
+        wd = self.open_home_page()
+        self.login(wd, "admin", "secret")
+        self.open_new_page(wd)
+        self.init_new_contact_creation(wd)
+        self.fill_contact_form(wd, "", "", "")
+        self.submit_new_contact(wd)
+        self.return_the_home_page(wd)
+        self.logout(wd)
 
     def logout(self, wd):
         wd.find_element_by_link_text("Logout").click()
