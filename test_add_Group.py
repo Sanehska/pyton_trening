@@ -6,6 +6,8 @@ from selenium.webdriver.support.ui import Select
 from selenium.common.exceptions import NoSuchElementException
 from selenium.common.exceptions import NoAlertPresentException
 import unittest, time, re
+from group import Group
+
 
 
 class TestAddGroup(unittest.TestCase):
@@ -15,28 +17,65 @@ class TestAddGroup(unittest.TestCase):
 
     def test_add_group(self):
         wd = self.wd
-        wd.get("http://localhost/addressbook/group.php")
+        self.open_home_page(wd)
+        self.login(wd, usermame="admin", password="secret")
+        self.open_groups_page(wd)
+        self.init_group_creation(wd)
+        self.fill_group_form(wd, Group(name="qwer", header="qwer1", footer="qwer2"))
+        self.submit_group_creation(wd)
+        self.return_the_groups_page(wd)
+        self.logout(wd)
+
+    def test_empty_group(self):
+        wd = self.wd
+        self.open_home_page(wd)
+        self.login(wd, usermame="admin", password="secret")
+        self.open_groups_page(wd)
+        self.init_group_creation(wd)
+        self.fill_group_form(wd, Group(name="", header="", footer=""))
+        self.submit_group_creation(wd)
+        self.return_the_groups_page(wd)
+        self.logout(wd)
+
+
+    def logout(self, wd):
+        wd.find_element_by_link_text("Logout").click()
+
+    def return_the_groups_page(self, wd):
+        wd.find_element_by_link_text("group page").click()
+
+    def submit_group_creation(self, wd):
+        wd.find_element_by_name("submit").click()
+
+    def fill_group_form(self, wd, group):
+        wd.find_element_by_name("group_name").click()
+        wd.find_element_by_name("group_name").clear()
+        wd.find_element_by_name("group_name").send_keys(group.name)
+        wd.find_element_by_name("group_header").click()
+        wd.find_element_by_name("group_header").clear()
+        wd.find_element_by_name("group_header").send_keys(group.header)
+        wd.find_element_by_name("group_footer").click()
+        wd.find_element_by_name("group_footer").clear()
+        wd.find_element_by_name("group_footer").send_keys(group.footer)
+
+    def init_group_creation(self, wd):
+        wd.find_element_by_id("content").click()
+
+    def open_groups_page(self, wd):
+        wd.find_element_by_xpath("//div[@id='content']/form/input[4]").click()
+
+    def login(self, wd, usermame, password):
         wd.find_element_by_name("user").clear()
-        wd.find_element_by_name("user").send_keys("admin")
+        wd.find_element_by_name("user").send_keys(usermame)
         wd.find_element_by_id("LoginForm").click()
         wd.find_element_by_name("pass").click()
         wd.find_element_by_name("pass").clear()
-        wd.find_element_by_name("pass").send_keys("secret")
+        wd.find_element_by_name("pass").send_keys(password)
         wd.find_element_by_xpath("//input[@value='Login']").click()
-        wd.find_element_by_xpath("//div[@id='content']/form/input[4]").click()
-        wd.find_element_by_id("content").click()
-        wd.find_element_by_name("group_name").click()
-        wd.find_element_by_name("group_name").clear()
-        wd.find_element_by_name("group_name").send_keys("qwer")
-        wd.find_element_by_name("group_header").click()
-        wd.find_element_by_name("group_header").clear()
-        wd.find_element_by_name("group_header").send_keys("qwer")
-        wd.find_element_by_name("group_footer").click()
-        wd.find_element_by_name("group_footer").clear()
-        wd.find_element_by_name("group_footer").send_keys("qwer")
-        wd.find_element_by_name("submit").click()
-        wd.find_element_by_link_text("group page").click()
-        wd.find_element_by_link_text("Logout").click()
+
+    def open_home_page(self, wd):
+
+        wd.get("http://localhost/addressbook/group.php")
 
     def is_element_present(self, how, what):
         try:
