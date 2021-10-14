@@ -13,19 +13,25 @@ class NewTestContact(unittest.TestCase):
         self.accept_next_alert = True
     
     def test_new_test_contact(self):
-        wd = self.wd
-        wd.get("http://localhost/addressbook/")
-        wd.find_element_by_name("user").click()
-        wd.find_element_by_name("user").clear()
-        wd.find_element_by_name("user").send_keys("admin")
-        wd.find_element_by_id("LoginForm").click()
-        wd.find_element_by_name("pass").click()
-        wd.find_element_by_name("pass").clear()
-        wd.find_element_by_name("pass").send_keys("secret")
-        wd.find_element_by_xpath("//input[@value='Login']").click()
-        wd.find_element_by_link_text("add new").click()
-        wd.find_element_by_name("firstname").click()
-        wd.find_element_by_name("firstname").clear()
+        wd = self.open_home_page()
+        self.login(wd)
+        self.open_new_page(wd)
+        self.init_new_contact_creation(wd)
+        self.fill_contact_form(wd)
+        self.submit_new_contact(wd)
+        self.return_the_home_page(wd)
+        self.logout(wd)
+
+    def logout(self, wd):
+        wd.find_element_by_link_text("Logout").click()
+
+    def return_the_home_page(self, wd):
+        wd.find_element_by_link_text("home").click()
+
+    def submit_new_contact(self, wd):
+        wd.find_element_by_xpath("//div[@id='content']/form/input[21]").click()
+
+    def fill_contact_form(self, wd):
         wd.find_element_by_name("firstname").send_keys("Sasha")
         wd.find_element_by_name("middlename").click()
         wd.find_element_by_name("middlename").clear()
@@ -33,10 +39,29 @@ class NewTestContact(unittest.TestCase):
         wd.find_element_by_name("nickname").click()
         wd.find_element_by_name("nickname").clear()
         wd.find_element_by_name("nickname").send_keys("Sa")
-        wd.find_element_by_xpath("//div[@id='content']/form/input[21]").click()
-        wd.find_element_by_link_text("home").click()
-        wd.find_element_by_link_text("Logout").click()
-    
+
+    def init_new_contact_creation(self, wd):
+        wd.find_element_by_name("firstname").click()
+        wd.find_element_by_name("firstname").clear()
+
+    def open_new_page(self, wd):
+        wd.find_element_by_link_text("add new").click()
+
+    def login(self, wd):
+        wd.find_element_by_name("user").send_keys("admin")
+        wd.find_element_by_id("LoginForm").click()
+        wd.find_element_by_name("pass").click()
+        wd.find_element_by_name("pass").clear()
+        wd.find_element_by_name("pass").send_keys("secret")
+        wd.find_element_by_xpath("//input[@value='Login']").click()
+
+    def open_home_page(self):
+        wd = self.wd
+        wd.get("http://localhost/addressbook/")
+        wd.find_element_by_name("user").click()
+        wd.find_element_by_name("user").clear()
+        return wd
+
     def is_element_present(self, how, what):
         try: self.wd.find_element(by=how, value=what)
         except NoSuchElementException as e: return False
