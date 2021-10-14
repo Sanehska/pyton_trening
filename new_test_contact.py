@@ -3,6 +3,7 @@ from selenium import webdriver
 from selenium.common.exceptions import NoSuchElementException
 from selenium.common.exceptions import NoAlertPresentException
 import unittest
+from contact import Contact
 
 class NewTestContact(unittest.TestCase):
     def setUp(self):
@@ -17,7 +18,7 @@ class NewTestContact(unittest.TestCase):
         self.login(wd, "admin", "secret")
         self.open_new_page(wd)
         self.init_new_contact_creation(wd)
-        self.fill_contact_form(wd, "Sasha", "Alex", "Sa")
+        self.fill_contact_form(wd, Contact (firstname="Sasha", middlename="Alex", nickname="Sa"))
         self.submit_new_contact(wd)
         self.return_the_home_page(wd)
         self.logout(wd)
@@ -27,7 +28,7 @@ class NewTestContact(unittest.TestCase):
         self.login(wd, "admin", "secret")
         self.open_new_page(wd)
         self.init_new_contact_creation(wd)
-        self.fill_contact_form(wd, "", "", "")
+        self.fill_contact_form(wd, Contact(firstname="", middlename="", nickname=""))
         self.submit_new_contact(wd)
         self.return_the_home_page(wd)
         self.logout(wd)
@@ -41,14 +42,14 @@ class NewTestContact(unittest.TestCase):
     def submit_new_contact(self, wd):
         wd.find_element_by_xpath("//div[@id='content']/form/input[21]").click()
 
-    def fill_contact_form(self, wd, firstname, middlename, nickname):
-        wd.find_element_by_name("firstname").send_keys(firstname)
+    def fill_contact_form(self, wd, contact):
+        wd.find_element_by_name("firstname").send_keys(contact.firstname)
         wd.find_element_by_name("middlename").click()
         wd.find_element_by_name("middlename").clear()
-        wd.find_element_by_name("middlename").send_keys(middlename)
+        wd.find_element_by_name("middlename").send_keys(contact.middlename)
         wd.find_element_by_name("nickname").click()
         wd.find_element_by_name("nickname").clear()
-        wd.find_element_by_name("nickname").send_keys(nickname)
+        wd.find_element_by_name("nickname").send_keys(contact.nickname)
 
     def init_new_contact_creation(self, wd):
         wd.find_element_by_name("firstname").click()
