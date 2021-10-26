@@ -8,8 +8,6 @@ from selenium.common.exceptions import NoAlertPresentException
 import unittest, time, re
 from group import Group
 
-
-
 class TestAddGroup(unittest.TestCase):
     def setUp(self):
         self.wd = webdriver.Firefox(firefox_binary=r'C:/Program Files/Mozilla Firefox/firefox.exe')
@@ -30,7 +28,6 @@ class TestAddGroup(unittest.TestCase):
         self.fill_group_form(wd, Group(name="", header="", footer=""))
         self.submit_group_creation(wd)
         self.logout(wd)
-
 
     def logout(self, wd):
         wd.find_element_by_link_text("Logout").click()
