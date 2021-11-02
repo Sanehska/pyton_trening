@@ -14,31 +14,33 @@ class NewTestContact(unittest.TestCase):
         self.accept_next_alert = True
     
     def test_new_test_contact(self):
-        wd = self.open_home_page()
-        self.login(wd, "admin", "secret")
-        self.init_new_contact_creation(wd)
-        self.fill_contact_form(wd, Contact (firstname="Sasha", middlename="Alex", nickname="Sa"))
-        self.submit_new_contact(wd)
-        self.logout(wd)
+        self.login("admin", "secret")
+        self.init_new_contact_creation()
+        self.fill_contact_form(Contact (firstname="Sasha", middlename="Alex", nickname="Sa"))
+        self.submit_new_contact()
+        self.logout()
 
     def test_empty_test_contact(self):
-        wd = self.open_home_page()
-        self.login(wd, "admin", "secret")
-        self.init_new_contact_creation(wd)
-        self.fill_contact_form(wd, Contact(firstname="", middlename="", nickname=""))
-        self.submit_new_contact(wd)
-        self.logout(wd)
+        self.login( "admin", "secret")
+        self.init_new_contact_creation()
+        self.fill_contact_form(Contact(firstname="", middlename="", nickname=""))
+        self.submit_new_contact()
+        self.logout()
 
-    def logout(self, wd):
+    def logout(self):
+        wd = self.open_home_page()
         wd.find_element_by_link_text("Logout").click()
 
-    def return_the_home_page(self, wd):
+    def return_the_home_page(self):
+        wd = self.open_home_page()
         wd.find_element_by_link_text("home").click()
 
-    def submit_new_contact(self, wd):
+    def submit_new_contact(self):
+        wd = self.open_home_page()
         wd.find_element_by_xpath("//div[@id='content']/form/input[21]").click()
 
-    def fill_contact_form(self, wd, contact):
+    def fill_contact_form(self,contact):
+        wd = self.open_home_page()
         wd.find_element_by_name("firstname").send_keys(contact.firstname)
         wd.find_element_by_name("middlename").click()
         wd.find_element_by_name("middlename").clear()
@@ -49,15 +51,18 @@ class NewTestContact(unittest.TestCase):
         self.return_the_home_page(wd)
 
 
-    def init_new_contact_creation(self, wd):
+    def init_new_contact_creation(self):
+        wd = self.open_home_page()
         wd.find_element_by_name("firstname").click()
         wd.find_element_by_name("firstname").clear()
 
-    def open_new_page(self, wd):
+    def open_new_page(self):
+        wd = self.open_home_page()
         wd.find_element_by_link_text("add new").click()
 
-    def login(self, wd, username, password):
-        self.open_new_page(wd)
+    def login(self, username, password):
+        wd = self.open_home_page()
+        self.open_new_page()
         wd.find_element_by_name("user").send_keys(username)
         wd.find_element_by_id("LoginForm").click()
         wd.find_element_by_name("pass").click()
